@@ -32,6 +32,26 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         this.table = arrayOfNulls(capacity)
     }
 
+    operator fun get(key: K): V? {
+        val hash = key.hashCode()
+        val index = indexFor(hash)
+        return sameKeyItemInBucket(key, hash, index)?.value
+    }
+
+    operator fun set(key: K, value: V?): V? {
+        val hash = hash(key.hashCode())
+        val index = indexFor(hash)
+
+        with(sameKeyItemInBucket(key, hash, index)) {
+            if (this == null)
+                addItem(key, value, hash, index)
+            else
+                return updateItemValue(this, value)
+        }
+
+        return null
+    }
+
     fun has(key: K): Boolean {
         val hash = hash(key.hashCode())
         val index = indexFor(hash)
@@ -47,21 +67,7 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         }
     }
 
-    fun put(key: K, value: V?): V? {
-        val hash = hash(key.hashCode())
-        val index = indexFor(hash)
-
-        with(findSameKeyItemInBucket(key, hash, index)) {
-            if (this == null)
-                addItem(key, value, hash, index)
-            else
-                return updateItemValue(this, value)
-        }
-
-        return null
-    }
-
-    fun remove(key: K): V? {
+    infix fun remove(key: K): V? {
         if (! has(key)) return null
 
         val hash = hash(key.hashCode())
@@ -106,7 +112,7 @@ class HashMap<K, V>(targetCapacity: Int = 16,
     private fun indexFor(hash: Int) =
         hash and (capacity - 1)
 
-    private fun findSameKeyItemInBucket(key: K, keyHash: Int, bucketIndex: Int): Item<K, V>? {
+    private fun sameKeyItemInBucket(key: K, keyHash: Int, bucketIndex: Int): Item<K, V>? {
         var bucketItem = table[bucketIndex] ?: return null
 
         while (true) {
