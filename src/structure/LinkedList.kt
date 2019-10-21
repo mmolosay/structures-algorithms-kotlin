@@ -9,8 +9,8 @@ import java.lang.IndexOutOfBoundsException
 class LinkedList<T> {
     var size = 0; private set
 
-    var first: Item<T>? = null
-    var last: Item<T>? = null
+    private var first: Item<T>? = null
+    private var last: Item<T>? = null
 
     data class Item<T>(
         var element: T?,
@@ -24,7 +24,7 @@ class LinkedList<T> {
         if (isIndex(position))
             return elementAt(position).element!!
         else
-            throw IndexOutOfBoundsException(outOfBoundsMsg(position))
+            throw IndexOutOfBoundsException()
     }
 
     operator fun set(position: Int, element: T): T {
@@ -34,7 +34,7 @@ class LinkedList<T> {
             item.element = element
             return oldElem!!
         }
-        throw IndexOutOfBoundsException(outOfBoundsMsg(position))
+        throw IndexOutOfBoundsException()
     }
 
     override fun toString(): String {
@@ -72,7 +72,7 @@ class LinkedList<T> {
     fun removeAt(position: Int): T {
         if (isIndex(position))
             return unlink(elementAt(position))
-        throw IndexOutOfBoundsException(outOfBoundsMsg(position))
+        throw IndexOutOfBoundsException()
     }
 
     private fun elementAt(index: Int): Item<T> {
@@ -129,7 +129,4 @@ class LinkedList<T> {
         size--
         return element
     }
-
-    private fun outOfBoundsMsg(position: Int) =
-        "Size: $size, but index: $position"
 }
