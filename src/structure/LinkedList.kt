@@ -37,21 +37,6 @@ class LinkedList<T> {
         throw IndexOutOfBoundsException()
     }
 
-    override fun toString(): String {
-        if (size == 0) return "[]"
-        val s = StringBuilder().append('[')
-        var curr = first!!
-        var i = 0
-        while (true) {
-            s.append(curr.element.toString())
-            if (i == size - 1)
-                return s.append(']').toString()
-            curr = curr.next!!
-            s.append(", ")
-            i++
-        }
-    }
-
     fun add(element: T): Boolean {
         linkLast(element)
         return true
@@ -128,5 +113,20 @@ class LinkedList<T> {
         item.element = null
         size--
         return element
+    }
+
+    override fun toString(): String {
+        if (size == 0) return "[]"
+        val s = StringBuilder().append('[')
+        var item = first!!
+        var i = 0
+        while (true) {
+            s.append(item.element.toString())
+            if (i == size - 1)
+                return s.append(']').toString()
+            item = item.next!!
+            s.append(',')
+            i++
+        }
     }
 }
