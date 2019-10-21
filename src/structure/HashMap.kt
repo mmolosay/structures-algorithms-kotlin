@@ -12,7 +12,9 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         var value: V?,
         val hash: Int,
         var next: Item<K, V>?
-    )
+    ) {
+        override fun toString(): String = "$key=$value"
+    }
 
     private val MAX_CAPACITY = Int.MAX_VALUE / 2 + 1
 
@@ -52,7 +54,7 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         return null
     }
 
-    fun has(key: K): Boolean {
+    infix fun has(key: K): Boolean {
         val hash = hash(key.hashCode())
         val index = indexFor(hash)
         var bucketItem = table[index] ?: return false
@@ -60,10 +62,7 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         while (true) {
             if (hash == bucketItem.hash && key == bucketItem.key)
                 return true
-            if (bucketItem.next != null)
-                bucketItem = bucketItem.next!!
-            else
-                return false
+            bucketItem = bucketItem.next ?: return false
         }
     }
 
@@ -155,10 +154,7 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         var bucketItem = table[index] ?: return
         while (true) {
             migrateItem(bucketItem, newTable)
-            if (bucketItem.next != null)
-                bucketItem = bucketItem.next!!
-            else
-                return
+            bucketItem = bucketItem.next ?: return
         }
     }
 
@@ -169,5 +165,24 @@ class HashMap<K, V>(targetCapacity: Int = 16,
         if (bucketFirst != null)
             item.next = bucketFirst
         newTable[newIndex] = item
+    }
+
+    override fun toString(): String {
+        if (size == 0) return "[]"
+
+        var item: Item<K, V>
+        var firstFound = false
+        val s = StringBuilder().append('[')
+
+        for (i in table.indices) {
+            item = table[i] ?: continue
+            while (true) {
+                if (firstFound) s.append(',')
+                s.append(item.toString())
+                item = item.next ?: break
+            }
+            firstFound = true
+        }
+        return s.append(']').toString()
     }
 }
