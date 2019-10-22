@@ -7,9 +7,12 @@ import kotlin.math.max
  * Created by ordogod on 22.10.2019.
  **/
 
-class Node<V>(var value: V, var parent: Node<V>? = null, var children: ArrayList<Node<V>> = arrayListOf()) {
+class TreeNode<V>(
+    var value: V,
+    var parent: TreeNode<V>? = null,
+    var children: ArrayList<TreeNode<V>> = arrayListOf()) {
 
-    val root: Node<V>
+    val root: TreeNode<V>
         get() {
             var root = this
             while (true)
@@ -40,26 +43,26 @@ class Node<V>(var value: V, var parent: Node<V>? = null, var children: ArrayList
             }
         }
 
-    fun addChild(child: Node<V>): Node<V> = apply {
+    fun addChild(child: TreeNode<V>): TreeNode<V> = apply {
         this.children.add(child)
         child.parent = this
     }
 
-    fun addChild(childValue: V): Node<V> = apply {
-        this.children.add(Node(childValue, this))
+    fun addChild(childValue: V): TreeNode<V> = apply {
+        this.children.add(TreeNode(childValue, this))
     }
 
-    fun addChildren(vararg children: Node<V>): Node<V> = apply {
+    fun addChildren(vararg children: TreeNode<V>): TreeNode<V> = apply {
         for (child in children)
             this.addChild(child)
     }
 
-    fun addChildren(vararg children: V): Node<V> = apply {
+    fun addChildren(vararg children: V): TreeNode<V> = apply {
         for (child in children)
             this.addChild(child)
     }
 
-    fun remove(): Node<V> = apply {
+    fun remove(): TreeNode<V> = apply {
         if (this != this.root) {
             this.parent!!.children.remove(this)
         }
@@ -67,7 +70,7 @@ class Node<V>(var value: V, var parent: Node<V>? = null, var children: ArrayList
             throw IllegalArgumentException("Root node can not be removed")
     }
 
-    fun findFirst(searchValue: V): Node<V>? {
+    fun findFirst(searchValue: V): TreeNode<V>? {
         if (this.value == searchValue)
             return this
         else
@@ -76,7 +79,7 @@ class Node<V>(var value: V, var parent: Node<V>? = null, var children: ArrayList
         return null
     }
 
-    fun contains(subnode: Node<V>): Boolean {
+    fun contains(subnode: TreeNode<V>): Boolean {
         if (this.children.contains(subnode))
             return true
         else
@@ -87,7 +90,7 @@ class Node<V>(var value: V, var parent: Node<V>? = null, var children: ArrayList
         return false
     }
 
-    fun traverse(path: Array<Int>): Node<V>? {
+    fun traverse(path: Array<Int>): TreeNode<V>? {
         return if (path.isEmpty())
             this
         else
