@@ -30,9 +30,9 @@ class LinkedList<T> {
     operator fun set(position: Int, element: T): T {
         if (isIndex(position)) {
             val item = elementAt(position)
-            val oldElem = item.element
+            val oldElem = item.element!!
             item.element = element
-            return oldElem!!
+            return oldElem
         }
         throw IndexOutOfBoundsException()
     }
@@ -43,13 +43,13 @@ class LinkedList<T> {
     }
 
     fun remove(element: T): Boolean {
-        var curr = first
-        while (curr != null) {
-            if (element == curr.element) {
-                unlink(curr)
+        var item = first
+        while (item != null) {
+            if (element == item.element) {
+                unlink(item)
                 return true
             }
-            curr = curr.next
+            item = item.next
         }
         return false
     }
@@ -61,18 +61,18 @@ class LinkedList<T> {
     }
 
     private fun elementAt(index: Int): Item<T> {
-        var curr: Item<T>
+        var item: Item<T>
         if (index < size / 2) {
-            curr = first!!
+            item = first!!
             for (i in 0 until index)
-                curr = curr.next!!
+                item = item.next!!
         }
         else {
-            curr = last!!
+            item = last!!
             for (i in size - 1 downTo index + 1)
-                curr = curr.prev!!
+                item = item.prev!!
         }
-        return curr
+        return item
     }
 
     private fun isIndex(position: Int) =
