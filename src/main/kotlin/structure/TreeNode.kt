@@ -43,6 +43,11 @@ class TreeNode<V>(
             }
         }
 
+    operator fun get(position: Int): TreeNode<V> {
+        require(position in this.children.indices)
+        return this.children[position]
+    }
+
     fun addChild(child: TreeNode<V>): TreeNode<V> = apply {
         this.children.add(child)
         child.parent = this
