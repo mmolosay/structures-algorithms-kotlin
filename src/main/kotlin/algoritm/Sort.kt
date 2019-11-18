@@ -23,13 +23,13 @@ object Sort {
         if (array.size < 2) return
         if (start >= end) return
 
-        val pivotEl = array[start + (end - start) / 2]
+        val pivotValue = array[start + (end - start) / 2]
         var i = start
         var j = end
 
         while (i <= j) {
-            while (array[i] < pivotEl) i++
-            while (array[j] > pivotEl) j--
+            while (array[i] < pivotValue) i++
+            while (array[j] > pivotValue) j--
 
             if (i <= j) {
                 swap(array, i, j)
