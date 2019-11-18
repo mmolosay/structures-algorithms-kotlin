@@ -10,7 +10,7 @@ class Set<E>(val array: ArrayList<E>) {
         get() = array.size
 
     init {
-        for (i in array.indices)
+        for (i in 0 until array.lastIndex) // excluding last element
             for (j in i+1 until array.size)
                 if (array[i] == array[j])
                     array.removeAt(j)
